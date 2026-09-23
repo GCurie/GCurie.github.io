@@ -1,0 +1,138 @@
+/* ===========================================================
+   Your site's styles. Change anything here — colors, fonts,
+   sizes. Every page on the site uses this one file.
+   =========================================================== */
+
+:root {
+  --ink: #16161a;          /* main text color */
+  --muted: #6b6b76;        /* quieter text */
+  --accent: #2f4fd8;       /* links and highlights */
+  --paper: #fdfdfb;        /* page background */
+  --line: #e4e4e0;         /* borders */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0 1.25rem 5rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* Keeps everything in a readable column in the middle of the page */
+header, main, footer {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+/* --- top navigation ---------------------------------------- */
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  padding: 2rem 0 1.5rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2.5rem;
+}
+
+header .site-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--ink);
+  margin-right: auto;
+}
+
+header nav a {
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 1.25rem;
+}
+
+header nav a:hover { color: var(--accent); }
+
+/* --- text --------------------------------------------------- */
+
+h1 {
+  font-size: 2.1rem;
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin: 2.5rem 0 0.75rem;
+}
+
+.tagline {
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin: 0 0 2rem;
+}
+
+a { color: var(--accent); }
+
+/* --- the list of links on the projects pages ----------------- */
+
+.card-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+}
+
+.card-list li {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 0.9rem;
+  transition: border-color 0.15s ease;
+}
+
+.card-list li:hover { border-color: var(--accent); }
+
+.card-list a {
+  display: block;
+  padding: 1.1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-list .title {
+  font-weight: 700;
+  color: var(--accent);
+  display: block;
+}
+
+.card-list .description {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* --- sketch pages ------------------------------------------- */
+
+.back {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.back:hover { color: var(--accent); }
+
+canvas { max-width: 100%; }
+
+/* --- footer -------------------------------------------------- */
+
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
