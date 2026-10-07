@@ -125,12 +125,6 @@ function mousePressed() {
 //Using the spacebar so I can play and pause the animation
 function keyPressed() {
   if (key === " ") {
-    // if (isLooping()) {
-    //   noLoop();
-    // } else {
-    //   loop();
-    // }
-    // spacebar pauses or starts only the first moving dancer
     dancerPaused = !dancerPaused;
 
     return false;
