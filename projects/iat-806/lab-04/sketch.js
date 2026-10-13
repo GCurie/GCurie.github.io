@@ -69,29 +69,44 @@ function draw() {
 
       let speed = speeds[i][j] * map(d, 0, maxDist, 0.5, 3);
 
-      animate(frames, speed, i * colWidth, j * rowHeight, colWidth);
+      let danceFrames;
+      if ((i + j) % 2 === 0) {
+        danceFrames = frames;
+      } else {
+        danceFrames = frames2;
+      }
+
+      animate(danceFrames, speed, i * colWidth, j * rowHeight, colWidth);
     }
   }
 }
 
 // draws one dancer: which poses, how fast, where, and how big
-function animate(frames, speed, xPosition, yPosition, imageWidth, imageHeight) {
-  let index = getFrameIndex(speed);
-  let currentFrame = frames[index];
+function animate(
+  danceFrames,
+  speed,
+  xPosition,
+  yPosition,
+  imageWidth,
+  imageHeight,
+) {
+  let index = getFrameIndex(danceFrames, speed);
+  let currentFrame = danceFrames[index];
   let origWidth = currentFrame.width;
   let origHeight = currentFrame.height;
   if (imageWidth && !imageHeight) {
     let scale = imageWidth / origWidth;
     imageHeight = scale * origHeight;
   }
+
   // TODO, complete the keeping scale correct logic.
   image(currentFrame, xPosition, yPosition, imageWidth, imageHeight);
 }
 
 // which pose to show right now. speed = draw-frames per pose: smaller = faster
-function getFrameIndex(speed) {
+function getFrameIndex(danceFrames, speed) {
   let slowFrame = Math.floor(frameCount / speed);
-  let index = slowFrame % frames.length;
+  let index = slowFrame % danceFrames.length;
 
   return index;
 }
