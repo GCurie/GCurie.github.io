@@ -70,13 +70,19 @@ function draw() {
       let speed = speeds[i][j] * map(d, 0, maxDist, 0.5, 3);
 
       let danceFrames;
-      if ((i + j) % 2 === 0) {
+      if ((i + j) % 3 === 0) {
         danceFrames = frames;
-      } else {
+      } else if ((i + j) % 3 === 1) {
         danceFrames = frames2;
+      } else {
+        danceFrames = frames3;
       }
 
+      let brightness = map(d, 0, maxDist, 255, 70);
+      tint(brightness);
+
       animate(danceFrames, speed, i * colWidth, j * rowHeight, colWidth);
+      noTint();
     }
   }
 }
