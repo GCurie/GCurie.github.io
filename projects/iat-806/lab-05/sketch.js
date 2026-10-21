@@ -7,7 +7,7 @@ let balls = [];
 // you could also write in camel_case
 // this is the number of balls that you want to create.
 // if your computer is struggling, lower this.
-let numBalls = 2500;
+let numBalls = 500;
 // no color variables, no position variables, they are all defined within the class.
 function setup() {
   const canvas = createCanvas(600, 600);
