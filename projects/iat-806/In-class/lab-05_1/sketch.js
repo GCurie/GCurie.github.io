@@ -24,7 +24,10 @@ function draw() {
 
 function mousePressed() {
   balls.forEach((ball) => {
-    let active = ball.contains(mouseX, mouseY);
-    ball.respond(active);
+    if (ball.contains(mouseX, mouseY)) {
+      ball.highlight();
+    } else {
+      ball.deHighlight();
+    }
   });
 }
