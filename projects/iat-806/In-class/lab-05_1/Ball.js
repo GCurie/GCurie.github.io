@@ -3,7 +3,7 @@ class Ball {
     this.x = x;
     this.y = y;
     this.originalColor = c;
-    this.highlightColor = "red";
+    this.highlightColor = "purple";
     this.r = r;
     this.maxR = maxR;
   }
@@ -30,6 +30,11 @@ class Ball {
     this.color = this.originalColor;
   }
 
+  isOnBody(mask) {
+    let pixel = mask.get(floor(this.x), floor(this.y)); //(returns r g b a array of pixel values)
+    return pixel[3] < 128; // Check if the pixel is part of the segmented body
+  }
+
   contains(externalX, externalY) {
     let distance = dist(this.x, this.y, externalX, externalY);
     return distance < this.r;
@@ -48,7 +53,7 @@ class Ball {
     fill(this.color);
     circle(this.x, this.y, this.r * 2);
   }
-} // The Ball class ends here!
+}
 
 function createRandomBall() {
   let ballX = random(0, width);
