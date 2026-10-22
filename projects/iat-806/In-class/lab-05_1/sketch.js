@@ -3,10 +3,10 @@ let bodySegmentation;
 let video;
 let segmentation;
 
-let numBalls = 500;
+let numBalls = 1000;
 
 let options = {
-  maskType: "parts",
+  maskType: "person",
 };
 
 async function setup() {
@@ -27,13 +27,18 @@ async function setup() {
 function draw() {
   background(120);
   //image(video, 0, 0);
-  if (segmentation) {
-    image(segmentation.mask, 0, 0, width, height);
-  }
+  // if (segmentation) {
+  //   image(segmentation.mask, 0, 0, width, height);
+  // }
+
   for (let ball of balls) {
     let byHowMuch = 1;
     //let active = ball.contains(mouseX, mouseY);
-    let active = ball.isOnBody(segmentation.mask);
+    let active = false;
+    if (segmentation) {
+      active = ball.isOnBody(segmentation.mask);
+    }
+
     ball.respond(active);
     ball.update(byHowMuch);
   }
