@@ -23,6 +23,8 @@ const MIN_CONFIDENCE = 0.25; // lower = detects more easily, but more false alar
 const GAME_TARGET = 8; // leaves to catch in the mini-game
 const SWEEP_MS = 7000; // how long the motorcycle takes to cross the screen
 const LOVE_LINE = "I love you mostest."; // the last line on the notebook after he says yes
+const SECRET_PHRASE = "I love you angel";
+const PHRASE_HINT = "three little words, then your nickname"; // "" to hide the hint
 // ==============================================
 
 // timings for the question screen (ms after the motorcycle starts)
@@ -98,6 +100,11 @@ let sc = 1,
   oy = 0,
   shakeX = 0,
   shakeY = 0;
+
+let seal1Set = false,
+  seal2Set = false,
+  typed = "",
+  wrongAt = -9999;
 
 let windowLeaves = [],
   windowClouds = [],
@@ -271,19 +278,14 @@ function readSeals() {
 
 function updateBoard() {
   const n = readSeals();
-  let t1 = n >= 1 || manual1;
-  const t2 = n >= 2 || manual2;
-  if (t2) t1 = true;
-  p1 += ((t1 ? 1 : 0) - p1) * 0.1;
-  p2 += ((t2 ? 1 : 0) - p2) * 0.1;
+  // seal 1 is recognised once, then it stays seated
+  if (!seal1Set && (n >= 1 || manual1)) seal1Set = true;
+  p1 += ((seal1Set ? 1 : 0) - p1) * 0.1;
+  p2 += ((seal2Set ? 1 : 0) - p2) * 0.1;
 
   updateAudio();
-  if (!dinged2 && p2 > 0.7) {
-    dinged2 = true;
-    ding();
-  }
 
-  // both seals together for a few seconds -> the mini-game
+  // both seals seated for a moment -> the mini-game
   if (p1 > 0.7 && p2 > 0.7) {
     if (!bothSince) bothSince = millis();
     if (millis() - bothSince > HOLD_MS) goGame();
@@ -1087,6 +1089,63 @@ function drawSeal(x, y, s, bow) {
   pop();
 }
 
+// ---- typing the magic words to seat the second seal ----
+function typingMode() {
+  return phase === "board" && seal1Set && p1 > 0.9 && !seal2Set;
+}
+
+function normalizePhrase(s) {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z ]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function checkPhrase(enterPressed) {
+  if (normalizePhrase(typed) === normalizePhrase(SECRET_PHRASE))
+    seatSecondSeal();
+  else if (enterPressed) {
+    wrongAt = millis();
+    typed = "";
+  }
+}
+
+function seatSecondSeal() {
+  seal2Set = true;
+  typed = "";
+  ding();
+}
+
+function drawTypingBox() {
+  const wrong = millis() - wrongAt < 1500;
+  push();
+  translate(wrong ? sin(millis() * 0.08) * 6 : 0, 0);
+  fill(255, 255, 255, 235);
+  stroke(wrong ? "#ff7aa6" : "#d9ccf5");
+  strokeWeight(3);
+  rect(605, 420, 340, 64, 32);
+  noStroke();
+  fill(INK);
+  textAlign(CENTER, CENTER);
+  textStyle(NORMAL);
+  textSize(22);
+  const caret = floor(millis() / 500) % 2 === 0 ? "|" : "";
+  text(typed + caret, 775, 453);
+  pop();
+
+  noStroke();
+  textAlign(CENTER, CENTER);
+  fill(INK + "aa");
+  textSize(15);
+  text(PHRASE_HINT, 775, 505);
+  if (wrong) {
+    fill("#ff7aa6");
+    textSize(18);
+    text("Not quite... try again!", 775, 535);
+  }
+}
+
 function drawCaption() {
   push();
   textAlign(CENTER, CENTER);
@@ -1096,9 +1155,12 @@ function drawCaption() {
   if (p1 < 0.5) {
     l1 = "Now boarding";
     l2 = "Hold the seal up to the camera to find your seat.";
-  } else if (p2 < 0.5) {
+  } else if (!seal2Set) {
     l1 = SEAT_HIS + ", window seat";
-    l2 = "Taken. But " + SEAT_MINE + ", on the aisle, is still empty...";
+    l2 =
+      "Taken. But " +
+      SEAT_MINE +
+      ", on the aisle, is still empty. Type the magic words to call me to you.";
   } else {
     l1 = "Together at last";
     l2 = "Stay right there for a moment...";
@@ -1111,6 +1173,7 @@ function drawCaption() {
   textSize(21);
   textLeading(28);
   text(l2, 605, 285, 340, 120);
+  if (typingMode()) drawTypingBox();
 
   if (p1 > 0.7 && p2 > 0.7 && bothSince) {
     // progress ring
@@ -1127,7 +1190,11 @@ function drawCaption() {
   noStroke();
   fill(INK + "55");
   textSize(13); // tiny keyboard hints (delete this line to hide)
-  text("keys: 1 / 2 = seal 1 / 2 \u00b7 C = camera \u00b7 Q = skip", 775, 655);
+  text(
+    "keys: 1 = seat seal 1 \u00b7 C = camera \u00b7 Q = skip \u00b7 Tab = skip the phrase",
+    775,
+    655,
+  );
   pop();
 }
 
@@ -1185,13 +1252,39 @@ function mousePressed() {
 }
 
 function keyPressed() {
+  // while he's typing the phrase, keys go to the text box
+  if (phase === "board" && typingMode()) {
+    if (keyCode === BACKSPACE) {
+      typed = typed.slice(0, -1);
+      return false;
+    }
+    if (keyCode === ENTER) {
+      checkPhrase(true);
+      return false;
+    }
+    if (keyCode === TAB) {
+      seatSecondSeal(); // backup so you're never stuck
+      return false;
+    }
+    return; // letters are handled in keyTyped()
+  }
+
   if (key === "c" || key === "C") showCam = !showCam;
   if (phase === "board") {
     if (key === "1") manual1 = !manual1;
-    if (key === "2") manual2 = !manual2;
     if (key === "q" || key === "Q") goGame();
   } else if (phase === "game") {
     if (key === "q" || key === "Q") goQuestion();
+  }
+}
+
+function keyTyped() {
+  if (typingMode()) {
+    if (key.length === 1 && typed.length < 28) {
+      typed += key;
+      checkPhrase(false);
+    }
+    return false;
   }
 }
 
