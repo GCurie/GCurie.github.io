@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>International Date Line</title>
+
+    <!-- Fredoka (cute rounded font) + Caveat (handwriting for the notebook).
+         Both fall back to system fonts if offline. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Fredoka:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #cdb9f2;
+      }
+      canvas {
+        display: block;
+      }
+      /* invisible text that forces the browser to load the fonts before the canvas uses them */
+      .fontload {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .fontload.fredoka {
+        font-family: "Fredoka";
+      }
+      .fontload.caveat {
+        font-family: "Caveat";
+      }
+      .fontload b {
+        font-weight: 700;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/addons/p5.sound.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+  </head>
+  <body>
+    <div class="fontload fredoka">font <b>font</b></div>
+    <div class="fontload caveat">font <b>font</b></div>
+    <script src="sketch.js"></script>
+  </body>
+</html>
