@@ -59,6 +59,7 @@ const HEART_COLS = ["#ff9ebd", "#ffc2d9", "#d9b8ff", "#ffd9a8"];
 const SEAL_COL = "#ffffff",
   SEAL_LINE = "#d8cff0",
   BELLY_COL = "#f1eefb";
+const CRACKER_COLS = ["#f2d29b", "#eec68a", "#f7dfb0", "#e9b97a"];
 
 // state
 let detector, song, video;
@@ -474,7 +475,7 @@ function updateGame() {
       vr: random(-0.05, 0.05),
       vx: random(-0.4, 0.4),
       vy: random(2.2, 3.2) * sc,
-      col: random(LEAF_COLS),
+      col: random(CRACKER_COLS),
     });
   }
 
@@ -522,7 +523,7 @@ function drawGame() {
     drawGameCaption();
   });
 
-  for (const l of gameLeaves) drawLeaf(l);
+  for (const l of gameLeaves) drawCracker(l);
   const k = 0.6 * sc;
   drawSeal(sealX, height - 103 * k - 12, k, false);
   drawHearts();
@@ -542,21 +543,28 @@ function drawGameCaption() {
   textSize(21);
   textLeading(28);
   text(
-    "Move your seal left and right to catch the autumn leaves.",
+    "Move your seal left and right to catch the rice crackers.",
     605,
     255,
     340,
     110,
   );
-  // leaf counter
+  // cracker counter
   for (let i = 0; i < GAME_TARGET; i++) {
     const x = 775 - (GAME_TARGET * 38) / 2 + 19 + i * 38;
-    push();
-    translate(x, 440);
-    rotate(-0.5);
-    fill(i < gameScore ? LEAF_COLS[i % LEAF_COLS.length] : "#eadff9");
-    ellipse(0, 0, 28, 15);
-    pop();
+    if (i < gameScore) {
+      drawCracker({
+        x,
+        y: 440,
+        rot: -0.4,
+        s: 13,
+        col: CRACKER_COLS[i % CRACKER_COLS.length],
+      });
+    } else {
+      noStroke();
+      fill("#eadff9");
+      circle(x, 440, 30);
+    }
   }
   textSize(22);
   text(gameScore + " / " + GAME_TARGET, 775, 480);
@@ -1286,6 +1294,30 @@ function stepLeaf(l, w, h) {
   }
   if (l.x < -30) l.x = w + 30;
   if (l.x > w + 30) l.x = -30;
+}
+
+function drawCracker(l) {
+  const r = l.s * 1.15;
+  push();
+  translate(l.x, l.y);
+  rotate(l.rot);
+  noStroke();
+  fill("#d9a964");
+  circle(0, 1.5, r * 2); // darker edge
+  fill(l.col);
+  circle(0, 0, r * 2); // the cracker
+  fill(255, 255, 255, 70);
+  circle(-r * 0.25, -r * 0.25, r * 1.1); // soft highlight
+  fill(190, 130, 60, 110); // toasted spots
+  circle(-r * 0.4, r * 0.2, r * 0.22);
+  circle(r * 0.35, -r * 0.35, r * 0.18);
+  circle(r * 0.1, r * 0.45, r * 0.16);
+  // fill("#2f3b34");
+  // rect(-r * 0.97, -r * 0.22, r * 1.94, r * 0.44, 2); // nori strip
+  // stroke(255, 255, 255, 60);
+  // strokeWeight(1);
+  // line(-r * 0.9, -r * 0.08, r * 0.9, -r * 0.08); // sheen on the nori
+  pop();
 }
 
 function drawLeaf(l) {
