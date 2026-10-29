@@ -40,7 +40,7 @@
          =================================================== -->
       <ul class="card-list">
         <li>
-          <a href="idl/index.html">
+          <a href="idl/index.html" data-locked>
             <span class="title">International Date Line</span>
             <span class="description"
               >Do you wanna fly away, do you wanna fly with me?</span
@@ -53,5 +53,33 @@
     <footer>
       <p><a href="../index.html">&larr; Back to projects</a></p>
     </footer>
+
+    <script>
+      const PASS_HASH =
+        "e4ad93ca07acb8d908a3aa41e920ea4f4ef4f26e7f86cf8291c5db289780a5ae";
+
+      async function sha256(text) {
+        const buf = await crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(text),
+        );
+        return [...new Uint8Array(buf)]
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      document.querySelectorAll("a[data-locked]").forEach((link) => {
+        link.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const guess = prompt("Enter the passcode:");
+          if (guess === null) return;
+          if ((await sha256(guess)) === PASS_HASH) {
+            window.location.href = link.href;
+          } else {
+            alert("Wrong passcode!");
+          }
+        });
+      });
+    </script>
   </body>
 </html>

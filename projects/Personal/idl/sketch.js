@@ -400,9 +400,7 @@ function drawTitle() {
     textSize(18);
     fill("#8b79b8");
     text(
-      HIS_NAME
-        ? "PASSENGER: " + HIS_NAME.toUpperCase()
-        : "left side \u00b7 window & aisle",
+      HIS_NAME ? "PASSENGER: X" : "left side \u00b7 window & aisle",
       215,
       490,
     );
