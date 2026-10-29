@@ -71,12 +71,12 @@
       document.querySelectorAll("a[data-locked]").forEach((link) => {
         link.addEventListener("click", async (e) => {
           e.preventDefault();
-          const guess = prompt("Enter the passcode:");
+          const guess = prompt("Enter the password:");
           if (guess === null) return;
           if ((await sha256(guess)) === PASS_HASH) {
             window.location.href = link.href;
           } else {
-            alert("Wrong passcode!");
+            alert("Wrong password!");
           }
         });
       });
