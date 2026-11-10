@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Metrics Sankey Explorer</title>
+  <link rel="stylesheet" href="style_v2.css">
+</head>
+<body>
+
+<header>
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0">
+    <rect x="1" y="4" width="4" height="12" rx="1.5" fill="currentColor" opacity="0.7"/>
+    <rect x="8" y="2" width="4" height="16" rx="1.5" fill="currentColor" opacity="0.85"/>
+    <rect x="15" y="6" width="4" height="10" rx="1.5" fill="currentColor" opacity="0.7"/>
+    <line x1="5" y1="10" x2="8" y2="10" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+    <line x1="12" y1="10" x2="15" y2="10" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+  </svg>
+  <h1>Health Metrics Sankey Explorer</h1>
+  <p>Click a metric node to colour-code its flows. Use filters to drill into individual codes.</p>
+</header>
+
+<main>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="filter-bar-title">
+      Filter by category
+      &nbsp;&nbsp;
+      <button class="chip-reset" id="reset-all">Reset all</button>
+    </div>
+    <div class="filter-columns">
+
+      <div>
+        <div class="filter-col-label">
+          <span class="dot dot-metric"></span>
+          Metric categories
+        </div>
+        <div class="filter-chips" id="metric-filters"></div>
+      </div>
+
+      <div>
+        <div class="filter-col-label">
+          <span class="dot dot-question"></span>
+          Question categories
+        </div>
+        <div class="filter-chips" id="question-filters"></div>
+      </div>
+
+      <div>
+        <div class="filter-col-label">
+          <span class="dot dot-solution"></span>
+          Solution categories
+        </div>
+        <div class="filter-chips" id="solution-filters"></div>
+      </div>
+
+    </div>
+
+    <!-- Dual-action hint -->
+    <div class="hint-bar">
+      <div class="hint-item">
+        <span class="hint-icon">⬛</span>
+        <span><strong>Click a pill</strong> — filters the chart to that category only and expands its individual codes</span>
+      </div>
+      <div class="hint-item">
+        <span class="hint-icon">〰</span>
+        <span><strong>Click a bar in the chart</strong> — highlights all flows connected to that node</span>
+      </div>
+      <div class="hint-item">
+        <span class="hint-icon">↗</span>
+        <span><strong>Hover a flow</strong> — shows the exact metric → question → solution path</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart title -->
+  <div class="chart-title-bar">
+    <span id="chart-title">All Categories — Metric → Question → Solution Flow</span>
+<!--  dynamic title-->
+  </div>
+
+  <!-- Sankey diagram -->
+  <div class="sankey-card">
+    <svg id="sankey-svg" aria-label="Sankey diagram showing flow from metrics to questions to solutions"></svg>
+  </div>
+
+</main>
+
+<!-- Tooltip -->
+<div id="tooltip"></div>
+
+<script src="data.js"></script>
+<script src="sankey_v2.js"></script>
+
+</body>
+</html>

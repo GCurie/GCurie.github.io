@@ -1,0 +1,346 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f8f7f4;
+  --surface: #ffffff;
+  --border: rgba(0,0,0,0.10);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a1a18;
+  --text-muted: #6b6b66;
+  --text-hint: #9a9a94;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+
+  /* Column colors */
+  --col-metric:   #4a6fa5;
+  --col-question: #5a8a6a;
+  --col-solution: #8a5a8a;
+
+  --col-metric-light:   #dce8f7;
+  --col-question-light: #d8edde;
+  --col-solution-light: #ead8ea;
+
+  --col-metric-mid:   #7a9fc8;
+  --col-question-mid: #7ab08a;
+  --col-solution-mid: #b07ab0;
+
+  --highlight: #e8a020;
+  --highlight-light: #fef3d8;
+
+  --color-1: #E69F00; /* Orange */
+  --color-2: #56B4E9; /* Sky Blue */
+  --color-3: #009E73; /* Bluish Green */
+  --color-4: #F0E442; /* Yellow */
+  --color-5: #90446E; /* Reddish Purple */
+  --color-6: #5A1212; /* Dark Red */
+  --color-7: #51C421;
+
+  /* Shared Question/Solution Colors */
+  --color-ques:  #82BEA5; /* Seafoam */
+  --color-sol:  #9A232E;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── Header ── */
+header {
+  background: var(--surface);
+  border-bottom: 0.5px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+header h1 {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+header p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+/* ── Layout ── */
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Filter bar ── */
+.filter-bar {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+}
+
+.filter-bar-title {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-hint);
+  margin-bottom: 12px;
+}
+
+.filter-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.filter-col-label {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-col-label .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-metric   { background: var(--col-metric); }
+.dot-question { background: var(--col-question); }
+.dot-solution { background: var(--col-solution); }
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.chip:hover {
+  background: var(--bg);
+}
+
+/* Hover effect from v1 */
+.chip:hover:not(.active) {
+  background: var(--bg);
+  border-color: var(--text-hint);
+}
+
+.chip.active.metric-chip {
+  background: var(--chip-active-bg) !important;
+  border-color: var(--chip-active-bg) !important;
+  color: #fff !important;
+}
+.chip.active.question-chip {
+  background: #82BEA5;
+  border-color:#82BEA5;
+  color: #fff;
+}
+.chip.active.solution-chip {
+  background: #9A232E;
+  border-color: #9A232E;
+  color: #fff;
+}
+/* Tint metric chip borders with their palette colour at rest */
+.metric-chip { border-color: var(--chip-color, var(--border-strong)); }
+
+.chip-reset {
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.chip-reset:hover { color: var(--text); border-color: var(--border-strong); }
+
+/* ── Hint bar (inside filter card, below chips) ── */
+.hint-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--border);
+}
+.hint-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--text-muted);
+  max-width: 260px;
+}
+.hint-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  opacity: 0.6;
+  margin-top: 1px;
+}
+.hint-item strong { color: var(--text); font-weight: 500; }
+
+/* ── Chart title bar ── */
+.chart-title-bar {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 4px 2px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Legend / info bar — hidden ── */
+.info-bar { display: none; }
+.expand-badge { display: none !important; }
+.color-legend { display: none !important; }
+
+/* ── Sankey card ── */
+.sankey-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 0 20px 0;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+  overflow-y: auto;
+}
+.sankey-card svg {
+  display: block;
+  overflow: visible;
+  /*min-width: 900px;*/
+}
+
+/* ── SVG styles ── */
+.node-rect {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.node-rect:hover { opacity: 0.85; }
+
+.node-label {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  fill: #1a1a18;
+  pointer-events: none;
+  dominant-baseline: central;
+}
+
+.node-value {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 10px;
+  fill: #9a9a94;
+  pointer-events: none;
+  dominant-baseline: central;
+}
+
+.link-path {
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.link-path:hover { filter: brightness(0.5); }
+
+.col-header {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  fill: #9a9a94;
+  pointer-events: none;
+}
+
+/* ── Tooltip ── */
+#tooltip {
+  position: fixed;
+  background: #ffffff;
+  border: 0.5px solid rgba(0,0,0,0.18);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  max-width: 260px;
+  z-index: 1000;
+}
+
+#tooltip.visible { opacity: 1; }
+#tooltip strong { display: block; font-weight: 500; margin-bottom: 2px; }
+#tooltip span   { color: var(--text-muted); }
+#tooltip .tip-path { font-size: 11px; color: #6b6b66; margin-top: 4px; display:block; }
+
+/* ── Expand indicator badge ── */
+.expand-badge {
+  /*!*display: inline-flex;*!*/
+  /*align-items: center;*/
+  /*gap: 5px;*/
+  /*font-size: 11px;*/
+  /*background: var(--highlight-light);*/
+  /*color: var(--highlight);*/
+  /*border-radius: 20px;*/
+  /*padding: 3px 9px;*/
+  /*font-weight: 500;*/
+  display: none !important;
+}
+
+/* ── Color legend for metric highlight ── */
+.color-legend {
+  display: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #fffdf7;
+  border: 0.5px solid #f0e8cc;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+}
+.color-legend.visible { display: flex; }
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .filter-columns { grid-template-columns: 1fr; }
+  header p { display: none; }
+}
