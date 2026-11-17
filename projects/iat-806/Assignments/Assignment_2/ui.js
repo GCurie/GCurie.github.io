@@ -1,8 +1,6 @@
-// ui.js - backdrop, HUD and the screens (start, intro, game over, win)
-
 function drawBackdrop() {
   background(10, 5, 30);
-  tint(255, 150); // dim the webcam so the effects pop
+  tint(255, 150);
   image(video, 0, 0, width, height);
   noTint();
   noStroke();
@@ -20,18 +18,18 @@ function drawHUD() {
   let L = LEVELS[level - 1];
   noStroke();
 
-  // score
+  //score
   fill(255);
   textAlign(LEFT, TOP);
   textSize(34);
   text("SCORE " + score, 20, 14);
 
-  // lives
+  //lives
   textAlign(RIGHT, TOP);
   fill(255, 70, 90);
   text("♥".repeat(max(lives, 0)), width - 20, 14);
 
-  // level name + progress bar
+  //level name, progress bar
   textAlign(CENTER, TOP);
   fill(255);
   textSize(24);
@@ -41,7 +39,7 @@ function drawHUD() {
   fill(190, 130, 255);
   rect(width / 2 - 150, 46, 300 * constrain(kills / L.goal, 0, 1), 14, 7);
 
-  // technique bar at the bottom (shows cooldowns)
+  //technique bars
   let slotW = 260;
   let startX = (width - slotW * GESTURE_ORDER.length) / 2;
   for (let i = 0; i < GESTURE_ORDER.length; i++) {
@@ -72,7 +70,6 @@ function drawHUD() {
   }
 }
 
-// ---------- Screens ----------
 function dim(a) {
   noStroke();
   fill(5, 0, 20, a);
@@ -89,7 +86,6 @@ function bigText(str, y, size, col) {
   noStroke();
 }
 
-// Show an open PALM (or press SPACE) to continue on menu screens
 function menuStart(delay) {
   let palmUp = handInfo.some((h) => h.gesture === "palm");
   if (palmUp && stateTimer > delay) resetGame();
@@ -105,7 +101,7 @@ function drawStart() {
     color(255),
   );
 
-  // technique guide
+  //technique guide
   let y = 300;
   for (let g of GESTURE_ORDER) {
     textAlign(LEFT, CENTER);
@@ -201,7 +197,6 @@ function drawWin() {
   menuStart(90);
 }
 
-// ---------- Exit button (top-right, under the lives). ESC does the same. ----------
 const EXIT_BTN = { x: 850, y: 62, w: 95, h: 34 };
 
 function exitButtonHit() {

@@ -1,21 +1,16 @@
-// config.js - settings you can tweak (loaded first)
-
-const VW = 640; // webcam size (what ml5 sees)
+const VW = 640;
 const VH = 480;
 
-// Put your sound files in the same folder as index.html.
-// If a file is missing, that sound just stays silent.
 const SOUND_FILES = {
-  pop: "pop.mp3", // a spirit dies
-  bolt: "bolt.mp3", // point
-  slash: "slash.mp3", // peace
-  shock: "shock.mp3", // palm
-  hurt: "hurt.mp3", // a spirit crossed the line
-  levelup: "levelup.mp3", // level cleared
-  gameover: "gameover.mp3", // you lose
+  pop: "pop.mp3",
+  bolt: "bolt.mp3",
+  slash: "slash.mp3",
+  shock: "shock.mp3",
+  hurt: "hurt.mp3",
+  levelup: "levelup.mp3",
+  gameover: "gameover.mp3",
 };
 
-// the three hand signs: name shown on screen, technique name, color [r,g,b]
 const GESTURE_INFO = {
   point: { label: "POINT", tech: "Cursed Bolt", col: [255, 90, 130] },
   peace: { label: "PEACE", tech: "Slash", col: [80, 230, 255] },
@@ -23,10 +18,8 @@ const GESTURE_INFO = {
 };
 const GESTURE_ORDER = ["point", "peace", "palm"];
 
-// how long (milliseconds) before a technique can be used again
 const COOLDOWN = { point: 450, peace: 1800, palm: 2200 };
 
-// goal = spirits to defeat, spawnEvery = frames between spirits, speed = [min, max]
 const LEVELS = [
   {
     name: "Cursed Spirits Awaken",

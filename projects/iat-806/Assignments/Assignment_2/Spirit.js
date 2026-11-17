@@ -1,6 +1,3 @@
-// Spirit.js
-// A cursed spirit that floats down the screen toward the player.
-
 class Spirit {
   constructor(speedMin, speedMax) {
     this.r = 40;
@@ -9,13 +6,17 @@ class Spirit {
     this.y = -this.r;
     this.speed = random(speedMin, speedMax);
     this.phase = random(TWO_PI);
-    this.col = random([color(150, 70, 210), color(210, 60, 120), color(60, 170, 220)]);
+    this.col = random([
+      color(150, 70, 210),
+      color(210, 60, 120),
+      color(60, 170, 220),
+    ]);
   }
 
   update() {
     this.y += this.speed;
     this.phase += 0.08;
-    this.x = this.baseX + sin(this.phase) * 20; // sway left/right
+    this.x = this.baseX + sin(this.phase) * 20; //sway
   }
 
   reachedLine(lineY) {
@@ -24,23 +25,23 @@ class Spirit {
 
   // ---------- Collision tests (the body -> object connection) ----------
 
-  // Circle attack (shockwave)
+  //shockwave
   hitByCircle(cx, cy, cr) {
     return dist(this.x, this.y, cx, cy) < cr + this.r;
   }
 
-  // Horizontal band across the whole screen (slash)
+  //slash
   hitByBand(bandY, bandH) {
     return abs(this.y - bandY) < bandH / 2 + this.r;
   }
 
-  // Ray from (x1,y1) in direction (dx,dy), which must be length 1 (bolt)
+  //bolt
   hitByRay(x1, y1, dx, dy, w) {
     let px = this.x - x1;
     let py = this.y - y1;
-    let t = px * dx + py * dy; // how far along the ray
-    if (t < 0) return false; // behind the fingertip
-    let d = abs(px * dy - py * dx); // sideways distance from the ray
+    let t = px * dx + py * dy; //how far along the ray
+    if (t < 0) return false; //behind the fingertip
+    let d = abs(px * dy - py * dx); //sideways distance from the ray
     return d < w / 2 + this.r;
   }
 

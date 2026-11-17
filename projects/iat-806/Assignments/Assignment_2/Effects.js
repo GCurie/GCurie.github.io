@@ -1,8 +1,3 @@
-// Effects.js
-// Small visual objects. Both have update(), show(), isDead()
-// so sketch code can treat them the same way.
-
-// A little burst particle (made when a spirit dies)
 class Particle {
   constructor(x, y, col) {
     this.x = x;
@@ -20,7 +15,12 @@ class Particle {
   }
   show() {
     noStroke();
-    fill(red(this.col), green(this.col), blue(this.col), (this.life / 35) * 255);
+    fill(
+      red(this.col),
+      green(this.col),
+      blue(this.col),
+      (this.life / 35) * 255,
+    );
     circle(this.x, this.y, this.size);
   }
   isDead() {
@@ -28,7 +28,7 @@ class Particle {
   }
 }
 
-// The visual of a technique: "shock", "slash" or "bolt"
+//technique
 class AttackFX {
   constructor(type, x, y, dx = 0, dy = -1) {
     this.type = type;
@@ -43,21 +43,18 @@ class AttackFX {
     this.life--;
   }
   show() {
-    let k = this.life / this.maxLife; // goes from 1 down to 0
+    let k = this.life / this.maxLife;
     push();
     if (this.type === "shock") {
-      // expanding ring
       noFill();
       stroke(200, 150, 255, k * 255);
       strokeWeight(14 * k + 2);
       circle(this.x, this.y, (1 - k) * 340);
     } else if (this.type === "slash") {
-      // line across the whole screen
       stroke(80, 230, 255, k * 255);
       strokeWeight(50 * k + 2);
       line(0, this.y, width, this.y);
     } else if (this.type === "bolt") {
-      // laser out of the fingertip
       stroke(255, 80, 120, k * 255);
       strokeWeight(26 * k + 2);
       line(this.x, this.y, this.x + this.dx * 2000, this.y + this.dy * 2000);
